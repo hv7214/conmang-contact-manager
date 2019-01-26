@@ -3,7 +3,10 @@
 const program = require('commander');
 const {
   addContact,
-  getContact
+ getContact,
+ getContactList,
+ updateContact,
+ deleteContact
 } = require('./logic');
 const {
   prompt
@@ -53,4 +56,30 @@ program
   .description('Get contact')
   .action(name => getContact(name));
 
-program.parse(process.argv);
+  program
+    .command('updateContact <_id>')
+    .alias('u')
+    .description('Update contact')
+    .action(_id => {
+      prompt(questions).then((answers) =>
+        updateContact(_id, answers));
+    });
+
+  program
+    .command('deleteContact <_id>')
+    .alias('d')
+    .description('Delete contact')
+    .action(_id => deleteContact(_id));
+
+  program
+    .command('getContactList')
+    .alias('l')
+    .description('List contacts')
+    .action(() => getContactList());
+
+  // Assert that a VALID command is provided
+  if (!process.argv.slice(2).length || !/[arudl]/.test(process.argv.slice(2))) {
+    program.outputHelp();
+    process.exit();
+  }
+  program.parse(process.argv);

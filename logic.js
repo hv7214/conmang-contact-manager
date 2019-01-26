@@ -3,9 +3,8 @@ const assert = require('assert');
 mongoose.Promise = global.Promise;
 
 
-const db = mongoose.connect('mongodb://phantom_webacker:asdf1234@ds111065.mlab.com:11065/oauth20', {
-  useNewUrlParser: true
-});
+const db = mongoose.connect('mongodb://phantom_webacker:asdf1234@ds111065.mlab.com:11065/oauth20',
+{useNewUrlParser: true});
 
 
 
@@ -37,10 +36,6 @@ const contactSchema = mongoose.Schema({
 // Define model as an interface with the database
 const Contact = mongoose.model('Contact', contactSchema);
 
-/**
- * @function  [addContact]
- * @returns {String} Status
- */
 const addContact = (contact) => {
   Contact.create(contact, (err) => {
     assert.equal(null, err);
@@ -49,10 +44,6 @@ const addContact = (contact) => {
   });
 };
 
-/**
- * @function  [getContact]
- * @returns {Json} contacts
- */
 const getContact = (name) => {
 
   const search = new RegExp(name, 'i');
@@ -71,8 +62,39 @@ const getContact = (name) => {
     });
 };
 
-// Export all methods
+const updateContact = (_id, contact) => {
+  Contact.update({ _id }, contact)
+  .exec((err, status) => {
+    assert.equal(null, err);
+    console.info('Updated successfully');
+    mongoose.connection.close();
+  });
+};
+
+
+const deleteContact = (_id) => {
+  Contact.deleteOne({ _id })
+  .exec((err, status) => {
+    assert.equal(null, err);
+    console.info('Deleted successfully');
+    mongoose.connection.close();
+  });
+};
+
+const getContactList = () => {
+  Contact.find()
+  .exec((err, contacts) => {
+    assert.equal(null, err);
+    console.info(contacts);
+    console.info(`${contacts.length} matches`);
+    mongoose.connection.close();
+  });
+};
+
 module.exports = {
   addContact,
-  getContact
+  getContact,
+  getContactList,
+  updateContact,
+  deleteContact
 };
