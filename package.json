@@ -1,0 +1,14 @@
+{
+  "name": "conmang",
+  "version": "1.0.0",
+  "main": "contact.js",
+  "license": "MIT",
+  "preferGlobal": true,
+
+  "dependencies": {
+    "commander": "^2.19.0",
+    "inquirer": "^6.2.1",
+    "mongoose": "^5.4.6"
+  },
+    "bin":{"conmang":"./contact.js"}
+}
